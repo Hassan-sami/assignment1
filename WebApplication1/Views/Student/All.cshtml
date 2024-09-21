@@ -1,0 +1,32 @@
+﻿@model IEnumerable<disStudent>
+@{
+    ViewData["Title"] = "All";
+}
+
+
+<div class="container mt-3">
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                <td>@s.FName</td>
+                <td>@s.LName</td>
+                <td>@s.Age</td>
+                </tr>       
+            }
+            
+            
+        </tbody>
+    </table>
+</div>
+

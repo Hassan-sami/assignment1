@@ -27,14 +27,7 @@ namespace assignment6.context
         public virtual DbSet<Student> Students { get; set; } = null!;        
         public virtual DbSet<Topic> Topics { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-
-                optionsBuilder.UseSqlServer("Server=.;Database=Route;Trusted_Connection=True;");
-            }
-        }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

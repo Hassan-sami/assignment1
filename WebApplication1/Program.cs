@@ -1,6 +1,11 @@
 using assignment6.context;
+using BLL.Services.Abstract;
+using BLL.Services.Implementation;
+using DAL.Repo.Abstract;
+using DAL.Repo.Implementation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+
 
 namespace WebApplication1
 {
@@ -12,7 +17,11 @@ namespace WebApplication1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<RouteAppContext>(options => { options.UseSqlServer("Server=.;Database=Route;Trusted_Connection=True;"); });
+            builder.Services.AddDbContext<assignment6.context.RouteContext>(options => { options.UseSqlServer("Server=.;Database=myRoute;Trusted_Connection=True;"); });
+            builder.Services.AddScoped<IStudnetService, StudnetService>();
+            builder.Services.AddScoped<IDepartmentService, DepartmnetService>();
+            builder.Services.AddScoped<IDeptartmentRepo, DepartmentRepo>();
+            builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             var app = builder.Build();
 
 

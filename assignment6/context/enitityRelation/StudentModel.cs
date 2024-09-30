@@ -20,8 +20,8 @@ namespace assignment6.context.enitityRelation
 
                 builder.ToTable("Student");
 
-                builder.Property(e => e.Id)
-                    .ValueGeneratedNever()
+            builder.Property(e => e.Id)
+                .UseIdentityColumn(2, 1)
                     .HasColumnName("St_Id");
 
                 builder.Property(e => e.DeptId).HasColumnName("Dept_Id");

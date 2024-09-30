@@ -5,26 +5,30 @@ using WebApplication1.ViewModels;
 using assignment6.context;
 using assignment6.context.entities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net;
+using MimeKit;
+using MailKit.Net.Smtp;
+using BLL.Services.Abstract;
 
 namespace WebApplication1.Controllers
 {
     public class StudentController : Controller
     {
         private readonly ILogger<StudentController> _logger;
-        private readonly RouteAppContext _routeContext;
+        private readonly IStudnetService _studnetService;
+        private readonly IDepartmentService _departmentService;
 
-        
-
-        public StudentController(ILogger<StudentController> logger, RouteAppContext routeContext)
+        public StudentController(ILogger<StudentController> logger, IStudnetService studnetService,IDepartmentService departmentService)
         {
             _logger = logger;
-            _routeContext = routeContext;
+            _studnetService = studnetService;
+            this._departmentService = departmentService;
         }
 
         [HttpGet]
         public IActionResult All()
         {
-            var result = from s in _routeContext.Students
+            var result = from s in _studnetService.GetStudents()
                          select new disStudent { FName = s.Fname, LName = s.Lname, Age = s.Age };
             return View(result);
         }
@@ -33,7 +37,7 @@ namespace WebApplication1.Controllers
         public IActionResult Add()
         {
             StudentVM  student= new StudentVM();
-            student.Departments = _routeContext.Departments.ToList();
+            student.Departments =_departmentService.GetDepartments().ToList();
             return View(student);
         }
         [HttpPost]
@@ -48,25 +52,22 @@ namespace WebApplication1.Controllers
                 student.DeptId = studentVM.DeptId;
                 student.Age = studentVM.Age;
 
-                _routeContext.Add(student);
-                await _routeContext.SaveChangesAsync();
+                _studnetService.Add(student);
+                
             }
             else
             {
-                studentVM.Departments = _routeContext.Departments.ToList();
+                studentVM.Departments = _departmentService.GetDepartments().ToList();
                 return View(studentVM);
             }
             
-
+            
             return RedirectToAction("ALl");
         }
 
 
         
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        
+        
     }
 }
